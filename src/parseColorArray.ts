@@ -110,8 +110,12 @@ export function parseColorArray(colorString: string): Uint8ClampedArray | null {
 
 }
 
-export function parseColorArrays(colorStrings:string[]): Uint8ClampedArray[] {
+export function parseColorArrays(colorStrings:string[]): (Uint8ClampedArray|null)[]|null {
 
-  return colorStrings.map(colorString => parseColorArray(colorString)).filter(colorArray => colorArray !== null)
+  const result =  colorStrings.map(colorString => parseColorArray(colorString)).filter(colorArray => colorArray !== null)
+
+  if(!result.length) return null
+
+  return result
 
 }
