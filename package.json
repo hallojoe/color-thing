@@ -1,0 +1,36 @@
+{
+  "name": "@casko/color-thing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [
+    "color",
+    "colors"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hallojoe/color-thing.git"
+  },
+  "author": "casper korsgaard",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hallojoe/color-thing/issues"
+  },
+  "homepage": "https://github.com/hallojoe/color-thing#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "@casko/string-thing": "^1.0.0"
+  }
+}
