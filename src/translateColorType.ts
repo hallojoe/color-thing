@@ -1,4 +1,4 @@
-import { SupportedColorTypes } from "./enums";
+import { SupportedColorTypes } from "./index";
 
 export function translateColorType(colorString: string): SupportedColorTypes {
     if (colorString.startsWith("#")) return SupportedColorTypes.Hex;

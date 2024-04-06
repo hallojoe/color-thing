@@ -1,5 +1,3 @@
-import { SupportedColorTypes } from "./enums";
-
 export function expandHexShorthand(hexShorthand: string): string {
 
     let sign = hexShorthand.startsWith("#") ? "#" : "";

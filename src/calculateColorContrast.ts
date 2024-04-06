@@ -2,13 +2,13 @@ import { calculateLuminance } from "./calculateLuminance";
 
 export function getContrastRatio(background: Uint8ClampedArray, foreground: Uint8ClampedArray): number {
 
-  const lumA = calculateLuminance(background);
+  const luminanceA = calculateLuminance(background);
 
-  const lumB = calculateLuminance(foreground);
+  const luminanceB = calculateLuminance(foreground);
 
-  const brighter = Math.max(lumA, lumB);
+  const brighter = Math.max(luminanceA, luminanceB);
 
-  const darker = Math.min(lumA, lumB);
+  const darker = Math.min(luminanceA, luminanceB);
 
   return (brighter + 0.05) / (darker + 0.05);
 }
