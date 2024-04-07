@@ -1,44 +1,12 @@
 import { getContrastRatio } from "./calculateColorContrast"
 import { evaluateContrast, WCAGColorContrastRatings, WCAGColorContrastSubjects } from "./evaluateContrast"
 
-export function suggestForegroundColors(colors: Uint8ClampedArray[] | null): [Uint8ClampedArray, Uint8ClampedArray][] | null {
-
-  if (colors === null) return null
-
-  const bestMatches: [Uint8ClampedArray, Uint8ClampedArray][] = []
-
-  colors.forEach(background => {
-
-    let bestContrast = -1
-
-    let bestForeground: Uint8ClampedArray | null = null
-
-    colors.forEach(foreground => {
-
-      const contrast = getContrastRatio(background, foreground)
-
-      if (contrast > bestContrast) {
-
-        bestContrast = contrast
-
-        bestForeground = foreground
-
-      }
-
-    })
-
-    if (bestForeground) bestMatches.push([background, bestForeground])
-
-  })
-
-  return bestMatches.length ? bestMatches : null
-
-}
-
 export interface IColorCombination {
   background: Uint8ClampedArray
   foreground: Uint8ClampedArray
-  contrast:number,
+  backgroundLuminance: number
+  foregroundLuminance: number
+  contrast:number
   evaluation:[WCAGColorContrastSubjects, WCAGColorContrastRatings][]
 }
 
@@ -52,8 +20,8 @@ export function createColorsCombinations(colors: Uint8ClampedArray[] | null): IC
 
     colors.forEach(foreground => {
 
-      const contrast = getContrastRatio(background, foreground)
-
+      const [contrast, backgroundLuminance, foregroundLuminance] = getContrastRatio(background, foreground)
+    
       const contrastEvaluation = evaluateContrast(contrast)
 
       const contrastValidates = contrastEvaluation.some(([_, evaluation]) => evaluation !== WCAGColorContrastRatings.Fail)
@@ -63,12 +31,35 @@ export function createColorsCombinations(colors: Uint8ClampedArray[] | null): IC
         validatedColors.push({
           background, 
           foreground, 
+          backgroundLuminance,
+          foregroundLuminance,
           contrast, 
           evaluation: contrastEvaluation
         })
 
       }
+
+      const [contrast2, backgroundLuminance2, foregroundLuminance2] = getContrastRatio(foreground, background)
+    
+      const contrastEvaluation2 = evaluateContrast(contrast2)
+
+      const contrastValidates2 = contrastEvaluation2.some(([_, evaluation]) => evaluation !== WCAGColorContrastRatings.Fail)
+
+      if(contrastValidates2) {
+
+        validatedColors.push({
+          foreground, 
+          background, 
+          backgroundLuminance: backgroundLuminance2,
+          foregroundLuminance: foregroundLuminance2,
+          contrast: contrast2, 
+          evaluation: contrastEvaluation2
+        })
+
+      }
       
+
+
     })
 
   })

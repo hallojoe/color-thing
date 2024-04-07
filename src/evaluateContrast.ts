@@ -1,3 +1,5 @@
+import { addFlag } from "@casko/enum-thing"
+
 export enum WCAGColorContrastSubjects {
   None,
   Text,
@@ -14,31 +16,37 @@ export enum WCAGColorContrastRatings {
 
 export function evaluateUiElementContrast(contrastRatio: number): WCAGColorContrastRatings {
 
-  if (contrastRatio >= 3) return WCAGColorContrastRatings.AA
+  let result = WCAGColorContrastRatings.None
 
-  if (contrastRatio >= 7) return WCAGColorContrastRatings.AA | WCAGColorContrastRatings.AAA
+  if (contrastRatio >= 3) result = addFlag(result, WCAGColorContrastRatings.AA)
 
-  return WCAGColorContrastRatings.Fail
+  if (contrastRatio >= 7) result = addFlag(result, WCAGColorContrastRatings.AAA)
+
+  return result === WCAGColorContrastRatings.None ? WCAGColorContrastRatings.Fail : result
 
 }
 
 export function evaluateTextElementContrast(contrastRatio: number): WCAGColorContrastRatings {
 
-  if (contrastRatio >= 4.5) return WCAGColorContrastRatings.AA
+  let result = WCAGColorContrastRatings.None
 
-  if (contrastRatio >= 7) return WCAGColorContrastRatings.AA | WCAGColorContrastRatings.AAA
+  if (contrastRatio >= 4.5) result = addFlag(result, WCAGColorContrastRatings.AA)
 
-  return WCAGColorContrastRatings.Fail
+  if (contrastRatio >= 7) result = addFlag(result, WCAGColorContrastRatings.AAA)
+  
+  return result === WCAGColorContrastRatings.None ? WCAGColorContrastRatings.Fail : result
 
 }
 
 export function evaluateLargeTextElementContrast(contrastRatio: number): WCAGColorContrastRatings {
 
-  if (contrastRatio >= 3) return WCAGColorContrastRatings.AA
+  let result = WCAGColorContrastRatings.None
 
-  if (contrastRatio >= 4.5) return WCAGColorContrastRatings.AA | WCAGColorContrastRatings.AAA
+  if (contrastRatio >= 3) result = addFlag(result, WCAGColorContrastRatings.AA)
 
-  return WCAGColorContrastRatings.Fail
+  if (contrastRatio >= 4.5) result = addFlag(result, WCAGColorContrastRatings.AAA)
+
+  return result === WCAGColorContrastRatings.None ? WCAGColorContrastRatings.Fail : result
 
 }
 
@@ -46,8 +54,8 @@ export function evaluateContrast(contrastRatio: number): [WCAGColorContrastSubje
 
   return [
     [WCAGColorContrastSubjects.Text, evaluateTextElementContrast(contrastRatio)],
-    [WCAGColorContrastSubjects.LargeText, evaluateTextElementContrast(contrastRatio)],
-    [WCAGColorContrastSubjects.UiElement, evaluateTextElementContrast(contrastRatio)],
+    [WCAGColorContrastSubjects.LargeText, evaluateLargeTextElementContrast(contrastRatio)],
+    [WCAGColorContrastSubjects.UiElement, evaluateUiElementContrast(contrastRatio)],
   ]
 
 }
