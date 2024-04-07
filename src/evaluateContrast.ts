@@ -1,17 +1,16 @@
 import { addFlag } from "@casko/enum-thing"
 
-export enum WCAGColorContrastSubjects {
-  None,
-  Text,
-  LargeText,
-  UiElement
-}
-
 export enum WCAGColorContrastRatings {
   None = 0,
   AA = 1,
   AAA = 2,
   Fail = 4
+}
+
+export interface IContrastResult {
+  text: WCAGColorContrastRatings,
+  largeText: WCAGColorContrastRatings,
+  ui: WCAGColorContrastRatings,  
 }
 
 export function evaluateUiElementContrast(contrastRatio: number): WCAGColorContrastRatings {
@@ -50,12 +49,10 @@ export function evaluateLargeTextElementContrast(contrastRatio: number): WCAGCol
 
 }
 
-export function evaluateContrast(contrastRatio: number): [WCAGColorContrastSubjects, WCAGColorContrastRatings][] {
-
-  return [
-    [WCAGColorContrastSubjects.Text, evaluateTextElementContrast(contrastRatio)],
-    [WCAGColorContrastSubjects.LargeText, evaluateLargeTextElementContrast(contrastRatio)],
-    [WCAGColorContrastSubjects.UiElement, evaluateUiElementContrast(contrastRatio)],
-  ]
-
+export function evaluateContrast(contrastRatio: number): IContrastResult {
+  return {
+    text: evaluateTextElementContrast(contrastRatio),
+    largeText: evaluateLargeTextElementContrast(contrastRatio),
+    ui: evaluateUiElementContrast(contrastRatio)
+  }
 }

@@ -1,5 +1,5 @@
 import { getContrastRatio } from "./calculateColorContrast"
-import { evaluateContrast, WCAGColorContrastRatings, WCAGColorContrastSubjects } from "./evaluateContrast"
+import { evaluateContrast, IContrastResult, WCAGColorContrastRatings } from "./evaluateContrast"
 
 export interface IColorCombination {
   background: Uint8ClampedArray
@@ -7,7 +7,7 @@ export interface IColorCombination {
   backgroundLuminance: number
   foregroundLuminance: number
   contrast:number
-  evaluation:[WCAGColorContrastSubjects, WCAGColorContrastRatings][]
+  evaluation:IContrastResult
 }
 
 export function createColorsCombinations(colors: Uint8ClampedArray[] | null): IColorCombination[] | null {
@@ -24,7 +24,10 @@ export function createColorsCombinations(colors: Uint8ClampedArray[] | null): IC
     
       const contrastEvaluation = evaluateContrast(contrast)
 
-      const contrastValidates = contrastEvaluation.some(([_, evaluation]) => evaluation !== WCAGColorContrastRatings.Fail)
+      const contrastValidates = 
+           contrastEvaluation.text !== WCAGColorContrastRatings.Fail
+        || contrastEvaluation.largeText !== WCAGColorContrastRatings.Fail
+        || contrastEvaluation.ui !== WCAGColorContrastRatings.Fail
 
       if(contrastValidates) {
 
@@ -43,7 +46,10 @@ export function createColorsCombinations(colors: Uint8ClampedArray[] | null): IC
     
       const contrastEvaluation2 = evaluateContrast(contrast2)
 
-      const contrastValidates2 = contrastEvaluation2.some(([_, evaluation]) => evaluation !== WCAGColorContrastRatings.Fail)
+      const contrastValidates2 = 
+           contrastEvaluation2.text !== WCAGColorContrastRatings.Fail
+        || contrastEvaluation2.largeText !== WCAGColorContrastRatings.Fail
+        || contrastEvaluation2.ui !== WCAGColorContrastRatings.Fail
 
       if(contrastValidates2) {
 

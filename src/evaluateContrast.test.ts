@@ -1,7 +1,6 @@
 import {
     evaluateContrast,
     WCAGColorContrastRatings,
-    WCAGColorContrastSubjects,
   } from './evaluateContrast' 
   
   describe('evaluateContrast function', () => {
@@ -10,23 +9,23 @@ import {
       const contrastRatioAAA = 7.1 // This should pass AAA
       const contrastRatioFail = 2.9 // This should fail both AA and AAA
   
-      const expectedResultsAA = [
-        [WCAGColorContrastSubjects.Text, WCAGColorContrastRatings.AA],
-        [WCAGColorContrastSubjects.LargeText, WCAGColorContrastRatings.AA],
-        [WCAGColorContrastSubjects.UiElement, WCAGColorContrastRatings.Fail],
-      ]
+      const expectedResultsAA = {
+        text: WCAGColorContrastRatings.AA,
+        largeText: WCAGColorContrastRatings.AA,
+        ui: WCAGColorContrastRatings.Fail,
+      }
   
-      const expectedResultsAAA = [
-        [WCAGColorContrastSubjects.Text, WCAGColorContrastRatings.AA],
-        [WCAGColorContrastSubjects.LargeText, WCAGColorContrastRatings.AAA],
-        [WCAGColorContrastSubjects.UiElement, WCAGColorContrastRatings.Fail],
-      ]
+      const expectedResultsAAA = {
+        text: WCAGColorContrastRatings.AA,
+        largeText: WCAGColorContrastRatings.AAA,
+        ui: WCAGColorContrastRatings.Fail,
+      }
   
-      const expectedResultsFail = [
-        [WCAGColorContrastSubjects.Text, WCAGColorContrastRatings.AA],
-        [WCAGColorContrastSubjects.LargeText, WCAGColorContrastRatings.AAA],
-        [WCAGColorContrastSubjects.UiElement, WCAGColorContrastRatings.Fail],
-      ]
+      const expectedResultsFail = {
+        text: WCAGColorContrastRatings.AA,
+        largeText: WCAGColorContrastRatings.AAA,
+        ui: WCAGColorContrastRatings.Fail,
+      }
   
       // Test for contrast ratio passing AA
       const actualResultsAA = evaluateContrast(contrastRatioAA)
